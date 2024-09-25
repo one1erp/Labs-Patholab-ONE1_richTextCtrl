@@ -1,5 +1,7 @@
-﻿using System.Windows.Forms;
+﻿using System;
+using System.Windows.Forms;
 using NHunspellExtender;
+using Patholab_Common;
 
 namespace ONE1_richTextCtrl
 {
@@ -87,7 +89,15 @@ namespace ONE1_richTextCtrl
             this.tsbtnZoomIn = new System.Windows.Forms.ToolStripButton();
             this.tsbtnZoomOut = new System.Windows.Forms.ToolStripButton();
             this.rtbDocument = new System.Windows.Forms.RichTextBox();
-            this.NHunspellTextBoxExtender1 = new NHunspellExtender.NHunspellTextBoxExtender();
+            try
+            {
+                this.NHunspellTextBoxExtender1 = new NHunspellExtender.NHunspellTextBoxExtender();
+            }
+            catch (Exception ex)
+            {
+                Logger.WriteLogFile($"After initializing NHunspellTextBoxExtender1");
+                Logger.WriteLogFile(ex);
+            }
             this.toolStripFindReplace.SuspendLayout();
             this.toolStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.NHunspellTextBoxExtender1)).BeginInit();

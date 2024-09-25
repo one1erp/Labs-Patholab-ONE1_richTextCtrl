@@ -1,4 +1,5 @@
-﻿using System;
+﻿
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Configuration;
@@ -11,6 +12,7 @@ using System.Runtime.InteropServices;
 using System.Runtime.Remoting.Messaging;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
+using Patholab_Common;
 
 namespace ONE1_richTextCtrl
 {
@@ -22,20 +24,42 @@ namespace ONE1_richTextCtrl
         public event Action ExtraBtnClciked;
         public RichSpellCtrl()
         {
-            InitializeComponent();
+            try
+            {
+                InitializeComponent();
 
-            //Add Option to disable spell checker 24/3/22
-            //if (!DesignMode)
-            //{
-            // code that shouldn't be executed at design time 
-            useSpellChecker = UseSpellCheckConfig();
+                try
+                {
+                    useSpellChecker = UseSpellCheckConfig();
+
+                }
+                catch (Exception ex)
+                {
+                    Logger.WriteLogFile($"After useSpellChecker = UseSpellCheckConfig();");
+                    Logger.WriteLogFile(ex);
+                }
+
+                try
+                {
+                    TextBoxBase rt = rtbDocument;
+                    if (useSpellChecker == false)
+                        NHunspellTextBoxExtender1.DisableTextBoxBase(ref rt);
+                }
+                catch (Exception ex)
+                {
+                    Logger.WriteLogFile($"After NHunspellTextBoxExtender1.DisableTextBoxBase(ref rt);");
+                    Logger.WriteLogFile(ex);
+                }
+
+        }
+            catch (Exception ex)
+            {
+                Logger.WriteLogFile("new log");
+                Logger.WriteLogFile(ex);
+            }
 
 
-            TextBoxBase rt = rtbDocument;
-            if (useSpellChecker == false)
-                NHunspellTextBoxExtender1.DisableTextBoxBase(ref rt);
 
-            //}
 
         }
 
@@ -1192,7 +1216,6 @@ namespace ONE1_richTextCtrl
             }
             catch (Exception ex)
             {
-
                 MessageBox.Show("Error on get UseSpellChecker from config" + ex.Message);
                 return false;
             }
